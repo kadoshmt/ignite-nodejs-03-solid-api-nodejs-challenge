@@ -3,7 +3,7 @@ import { Pet, Prisma } from '@prisma/client'
 export interface SearchManyParams {
   city: string
   color?: string
-  species?: 'DOG' | 'CAT' | 'BIRD' | 'RODENT' | 'REPTILE'
+  species?: 'DOG' | 'CAT' | 'BIRD' | 'RODENT' | 'REPTILE' | 'ALL'
 }
 
 export interface PetsRepository {
