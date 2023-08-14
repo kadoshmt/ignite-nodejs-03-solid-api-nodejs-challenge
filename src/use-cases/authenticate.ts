@@ -1,6 +1,6 @@
-import { UsersRepository } from '@/repositories/users-repository'
+import { OrgsRepository } from '@/repositories/orgs-repository'
 import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials-error'
-import { User } from '@prisma/client'
+import { Org } from '@prisma/client'
 import { compare } from 'bcryptjs'
 
 interface AuthenticateUseCaseRequest {
@@ -9,30 +9,30 @@ interface AuthenticateUseCaseRequest {
 }
 
 interface AuthenticateUseCaseResponse {
-  user: User
+  org: Org
 }
 
 export class AuthenticateUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(private orgsRepository: OrgsRepository) {}
 
   async execute({
     email,
     password,
   }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
-    const user = await this.usersRepository.findByEmail(email)
+    const org = await this.orgsRepository.findByEmail(email)
 
-    if (!user) {
+    if (!org) {
       throw new InvalidCredentialsError()
     }
 
-    const doestPasswordMatches = await compare(password, user.password_hash)
+    const doestPasswordMatches = await compare(password, org.password_hash)
 
     if (!doestPasswordMatches) {
       throw new InvalidCredentialsError()
     }
 
     return {
-      user,
+      org,
     }
   }
 }

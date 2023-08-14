@@ -28,15 +28,19 @@ enum Species {
   REPTILE
 }
 
-model User {
+model Org {
   id            String   @id @default(uuid())
   name          String
   email         String   @unique
   password_hash String
-  role          Role     @default(ORG)
+  role          Role     @default(ADMIN)
+  address       String
+  city          String
+  phone         String
   created_at    DateTime @default(now())
+  pets          Pet[]
 
-  @@map("users")
+  @@map("orgs")
 }
 
 model Pet {
@@ -51,20 +55,8 @@ model Pet {
   description String?
   created_at  DateTime  @default(now())
   addopted_at DateTime?
-
-  org    Org?    @relation(fields: [org_id], references: [id])
-  org_id String?
+  org         Org?      @relation(fields: [org_id], references: [id])
+  org_id      String?
 
   @@map("pets")
-}
-
-model Org {
-  id      String @id @default(uuid())
-  name    String
-  address String
-  city    String
-  phone   String
-  pets    Pet[]
-
-  @@map("orgs")
 }
